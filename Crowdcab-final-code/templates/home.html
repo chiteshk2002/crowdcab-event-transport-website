@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% set body_class='premium-home product-home' %}
+{% block content %}
+<section class="product-hero">
+  <div class="hero-orbit one"></div>
+  <div class="hero-orbit two"></div>
+
+  <div class="product-copy">
+    <div class="event-chip"><span class="pulse-dot"></span> Brisbane event venues &middot; Event exit mode</div>
+    <h1>Exit smarter after every event.</h1>
+    <p class="hero-line refined">
+      Live pickup zones, cab ETA and safer walking guidance around Brisbane's major event venues &mdash; from Suncorp Stadium to the Brisbane Showgrounds.
+    </p>
+
+    <form class="premium-ride-card" id="homePlanForm" action="{{ url_for('map_page') }}">
+      <div class="ride-card-head">
+        <div>
+          <small>Plan your exit</small>
+          <strong>Where are you heading?</strong>
+        </div>
+        <span>Live</span>
+      </div>
+
+      <div class="route-input locked home-venue-input">
+        <i></i>
+        <div>
+          <small>Pickup</small>
+          <b>Your event venue</b>
+          <input type="hidden" id="homeVenueSelect" name="venue_id" value="suncorp_stadium">
+          <div class="venue-picker home-venue-picker" id="homeVenuePicker">
+            <button type="button" class="home-venue-button" id="homeVenuePickerButton" aria-haspopup="listbox" aria-expanded="false">
+              <span id="homeVenuePickerLabel">Suncorp Stadium</span>
+            </button>
+            <div class="venue-options home-venue-options" id="homeVenueOptions" role="listbox" aria-label="Choose event venue">
+              <button type="button" role="option" data-venue-id="suncorp_stadium">Suncorp Stadium</button>
+              <button type="button" role="option" data-venue-id="queensland_tennis_centre">Queensland Tennis Centre</button>
+              <button type="button" role="option" data-venue-id="chandler_sports_precinct">Chandler Sports Precinct</button>
+              <button type="button" role="option" data-venue-id="brisbane_showgrounds">Brisbane Showgrounds</button>
+              <button type="button" role="option" data-venue-id="ballymore_stadium">Ballymore Stadium</button>
+              <button type="button" role="option" data-venue-id="brisbane_arena">Brisbane Arena</button>
+              <button type="button" role="option" data-venue-id="brisbane_aquatic_centre">Brisbane Aquatic Centre</button>
+            </div>
+          </div>
+          <em>Pick from 7 Brisbane venues on the Live Map</em>
+        </div>
+      </div>
+      <div class="route-input destination-input">
+        <i></i>
+        <div><small>Destination</small><input id="homeDestinationInput" name="destination" placeholder="Enter suburb or address" aria-label="Destination" maxlength="80"></div>
+      </div>
+
+      <p class="home-plan-feedback" id="homePlanFeedback">Enter a destination to see your best pickup.</p>
+      <button class="primary-btn large" id="homePlanSubmit" type="submit" disabled>Show my best pickup</button>
+      <div class="ride-card-foot">
+        <span>Best zone</span><span>Fastest route</span><span>Lower crowd</span>
+      </div>
+    </form>
+  </div>
+
+  <div class="product-visual">
+    <a class="map-showcase-shell home-map-link" href="{{ url_for('map_page') }}" aria-label="Open Live Map">
+      <div class="showcase-topbar">
+        <span>Pickup intelligence</span>
+        <b id="homeLiveStatus">Login required</b>
+      </div>
+      <div id="homePreviewMap" class="home-map-preview showcase-map"></div>
+      <div class="route-ribbon">
+        <div><small>{% if user_name %}Recommended pickup{% else %}Secure map preview{% endif %}</small><strong id="homeBestZone">{% if user_name %}Loading...{% else %}Login to unlock{% endif %}</strong></div>
+        <span><b id="homeBestWalk">-- min</b> walk</span>
+        <span><b id="homeBestEta">-- min</b> ETA</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section class="proof-strip" aria-label="CrowdCab product highlights">
+  <article><small>01</small><strong>Pickup clarity</strong><span>Know exactly where to walk.</span></article>
+  <article><small>02</small><strong>Cab visibility</strong><span>Compare ETA before moving.</span></article>
+  <article><small>03</small><strong>Crowd control</strong><span>Avoid pressure points.</span></article>
+</section>
+
+<section id="how" class="cinematic-section journey-section">
+  <div class="section-heading-row">
+    <div>
+      <p class="eyebrow">How it works</p>
+      <h2>Three decisions. One clean exit.</h2>
+    </div>
+  </div>
+  <div class="journey-flow">
+    <article><b>1</b><strong>Enter destination</strong><span>Choose your event venue.</span></article>
+    <i></i>
+    <article><b>2</b><strong>Choose pickup</strong><span>Best, fastest or calmer.</span></article>
+    <i></i>
+    <article><b>3</b><strong>Follow route</strong><span>Walk. Meet. Ride.</span></article>
+  </div>
+</section>
+
+<section id="safety" class="cinematic-section trust-section">
+  <div class="trust-copy">
+    <p class="eyebrow">Safety</p>
+    <h2>Built for crowded exits, not quiet streets.</h2>
+    <p>Recommendations balance walking distance, crowd pressure, cab supply and accessibility support.</p>
+  </div>
+  <div class="trust-grid">
+    <article><span class="safe-dot green"></span><strong>Calmer zones</strong><small>Less crowd pressure</small></article>
+    <article><span class="safe-dot amber"></span><strong>Fast pickups</strong><small>Short cab ETA</small></article>
+    <article><span class="safe-dot blue"></span><strong>Accessible support</strong><small>Priority visibility</small></article>
+  </div>
+</section>
+{% endblock %}

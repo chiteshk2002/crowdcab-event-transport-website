@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="simple-page trips-page">
+  <div class="page-title-row">
+    <div>
+      <p class="eyebrow">Pickup plans</p>
+      <h1>Your pickup plans.</h1>
+      <p class="muted">Return to your active pickup guidance or open the Live Map for another venue.</p>
+    </div>
+    <a class="primary-btn" href="{{ url_for('map_page') }}">Open Live Map</a>
+  </div>
+  <div id="savedTripsList" class="trip-list enhanced-trips"></div>
+</section>
+{% endblock %}

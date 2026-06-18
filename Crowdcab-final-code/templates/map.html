@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% set body_class='map-product-full' %}
+{% block content %}
+<section class="live-product-page upgraded-map-page">
+  <div class="live-map-frame">
+    <div id="liveMap" class="full-live-map"></div>
+    <div class="map-legend-card user-map-legend">
+      <span><i class="legend stadium"></i>Stadium</span>
+      <span><i class="legend my-location"></i>My location</span>
+      <span><i class="legend easy"></i>Less crowded</span>
+      <span><i class="legend medium"></i>Moderate</span>
+      <span><i class="legend busy"></i>Busy</span>
+      <span><i class="legend cab"></i>Cab nearby</span>
+      <span><i class="legend traffic-red"></i>Crash/closure</span>
+      <span><i class="legend traffic-yellow"></i>Hazard/event</span>
+    </div>
+  </div>
+
+  <div class="map-search-card trip-planner-card">
+    <div class="mini-brand"><span class="brand-mark small">C</span><strong>Plan your ride</strong></div>
+    <p class="planner-copy">Tell CrowdCab where you are heading. We will match the pickup zone.</p>
+
+    <div class="trip-flow-mini" aria-label="Trip planning steps">
+      <span class="active" data-step="plan">1 Plan</span>
+      <span data-step="choose">2 Choose</span>
+      <span data-step="ride">3 Ride</span>
+    </div>
+    <label class="trip-input-block">
+      <small>Pickup venue</small>
+      <div class="venue-picker" id="venuePicker">
+        <button type="button" class="trip-field venue-select-field" id="venuePickerButton" aria-haspopup="listbox" aria-expanded="false">
+          <i></i><span id="venuePickerLabel">Suncorp Stadium</span>
+        </button>
+        <div class="venue-options" id="venueOptions" role="listbox" aria-label="Choose event venue">
+          <button type="button" role="option" class="use-location-option" id="useMyLocationBtn">Use my location</button>
+          <button type="button" role="option" data-venue-id="suncorp_stadium">Suncorp Stadium</button>
+          <button type="button" role="option" data-venue-id="queensland_tennis_centre">Queensland Tennis Centre</button>
+          <button type="button" role="option" data-venue-id="chandler_sports_precinct">Chandler Sports Precinct</button>
+          <button type="button" role="option" data-venue-id="brisbane_showgrounds">Brisbane Showgrounds</button>
+          <button type="button" role="option" data-venue-id="ballymore_stadium">Ballymore Stadium</button>
+          <button type="button" role="option" data-venue-id="brisbane_arena">Brisbane Arena</button>
+          <button type="button" role="option" data-venue-id="brisbane_aquatic_centre">Brisbane Aquatic Centre</button>
+        </div>
+      </div>
+      <span id="myLocationStatus" class="location-status">Optional GPS start point</span>
+    </label>
+
+    <label class="trip-input-block">
+      <small>Destination</small>
+      <div class="trip-field"><i></i><input id="destinationInput" placeholder="Enter suburb or address" maxlength="80"></div>
+    </label>
+
+    <div class="event-mode-card">
+      <small>Event mode</small>
+      <strong>Post-event exit flow</strong>
+      <span>Short walks and calmer pickup zones first.</span>
+    </div>
+
+    <button class="primary-btn" id="recenterMap">Find my pickup</button>
+
+    <div id="tripPlannerSummary" class="trip-summary-card hidden">
+      <small>Recommended Pickup Point</small>
+      <strong>Pickup loading...</strong>
+      <span></span>
+    </div>
+  </div>
+
+  <aside class="floating-recommendations pickup-choice-panel">
+    <div class="panel-head">
+      <p class="eyebrow">Live pickup choices</p>
+      <h2>Choose Pickup</h2>
+      <p>Compare nearby zones and tap one to update the map.</p>
+    </div>
+    <div class="smart-tabs four-tabs" role="tablist">
+      <button class="tab-btn active" data-mode="best">Best</button>
+      <button class="tab-btn" data-mode="fastest">Fastest</button>
+      <button class="tab-btn" data-mode="quiet">Less crowded</button>
+      <button class="tab-btn" data-mode="accessible">Accessible</button>
+    </div>
+    <div id="myLocationRideCard" class="my-location-ride-card hidden">
+      <small>My location start</small>
+      <strong>Start from your current location</strong>
+      <span>Pickup choices are ranked from where you are now.</span>
+      <button type="button" id="startFromMyLocationBtn">Start ride with My location</button>
+    </div>
+    <div id="selectedStrip" class="selected-pickup-card"><strong>Loading pickup...</strong><span></span></div>
+    <div id="recommendationList" class="recommendation-list premium-list pickup-options-list"></div>
+  </aside>
+</section>
+{% endblock %}

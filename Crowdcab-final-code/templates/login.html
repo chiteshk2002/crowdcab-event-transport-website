@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="auth-page">
+  <div class="auth-card otp-auth-card">
+    <p class="eyebrow">Login</p>
+    <h1>Email access.</h1>
+    <p class="auth-copy">Use your email to get a CrowdCab login code. No password needed for customer pickup guidance.</p>
+
+    {% if pending_auth %}
+      <div class="otp-target">
+        <span>Code sent to</span>
+        <strong>{{ pending_auth.email }}</strong>
+      </div>
+      <form class="auth-step-form" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="action" value="verify_otp">
+        <label>6-digit OTP</label>
+        <input name="otp" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="123456" autocomplete="one-time-code" required autofocus>
+        <button class="primary-btn" type="submit">Verify and continue</button>
+      </form>
+      <div class="auth-inline-actions">
+        <form method="post">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="action" value="resend_otp">
+          <button class="secondary-btn" type="submit">Send a new code</button>
+        </form>
+        <form method="post">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="action" value="change_email">
+          <button class="change-email-btn" type="submit">Change email</button>
+        </form>
+      </div>
+    {% else %}
+      <form class="auth-step-form" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="action" value="request_otp">
+        <label>Email</label>
+        <input id="loginEmailInput" name="email" type="email" placeholder="you@example.com" autocomplete="email" pattern="^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$" title="Please enter a valid public email address." value="{{ attempted_email or '' }}" required autofocus>
+        <p class="auth-field-help" id="loginEmailHelp">Use a valid public email such as Gmail, Outlook, Yahoo, iCloud, or Proton.</p>
+        <div id="internalPasswordGroup" class="internal-password-group" hidden>
+          <label>Internal password</label>
+          <input id="internalPasswordInput" name="internal_password" type="password" autocomplete="current-password">
+          <p class="auth-field-help">Required only for internal CrowdCab staff access.</p>
+        </div>
+        <button class="primary-btn" type="submit">Send login code</button>
+      </form>
+    {% endif %}
+  </div>
+</section>
+<script>
+  (() => {
+    const input = document.getElementById('loginEmailInput');
+    const help = document.getElementById('loginEmailHelp');
+    const internalGroup = document.getElementById('internalPasswordGroup');
+    const internalPassword = document.getElementById('internalPasswordInput');
+    if(!input || !help) return;
+    const allowedDomains = new Set([
+      'gmail.com','googlemail.com','outlook.com','hotmail.com','live.com','msn.com',
+      'yahoo.com','yahoo.co.in','icloud.com','me.com','mac.com','proton.me',
+      'protonmail.com','aol.com','zoho.com','mail.com','gmx.com','crowdcab.com'
+    ]);
+    const updateInternalPassword = () => {
+      const value = input.value.trim().toLowerCase();
+      const isInternal = value.endsWith('@crowdcab.com');
+      if(internalGroup){
+        internalGroup.hidden = !isInternal;
+      }
+      if(internalPassword){
+        internalPassword.required = isInternal;
+        if(!isInternal) internalPassword.value = '';
+      }
+    };
+    input.form?.addEventListener('submit', event => {
+      const value = input.value.trim().toLowerCase();
+      const domain = value.split('@').pop();
+      if(!input.validity.valid || !allowedDomains.has(domain)){
+        event.preventDefault();
+        help.textContent = 'Please check your email address and enter a valid public email such as Gmail, Outlook, Yahoo, iCloud, or Proton.';
+        help.classList.add('error');
+        input.focus();
+      }
+    });
+    input.addEventListener('input', () => {
+      help.textContent = 'Use a valid public email such as Gmail, Outlook, Yahoo, iCloud, or Proton.';
+      help.classList.remove('error');
+      updateInternalPassword();
+    });
+    updateInternalPassword();
+  })();
+</script>
+{% endblock %}
